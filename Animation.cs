@@ -17,6 +17,8 @@ namespace Paper_Down_Under
         private Rectangle partOfSpritesheet;
         private GraphicsDevice graphicsDevice;
         private int[] imgTicks;
+        private int imgTick;
+        private int imgAmt;
         private int ticks;
         private int index;
 
@@ -27,6 +29,16 @@ namespace Paper_Down_Under
             partOfSpritesheet = _partOfSpritesheet;
             imgTicks = _imgTicks;
             ticks = 0;
+        }
+
+        public Animation(Texture2D _spritesheet, GraphicsDevice _graphicsDevice, Rectangle _partOfSpritesheet, int _imgTick, int _imgAmt)
+        {
+            spritesheet = _spritesheet;
+            graphicsDevice = _graphicsDevice;
+            partOfSpritesheet = _partOfSpritesheet;
+            imgTick = _imgTick;
+            ticks = 0;
+            imgAmt = _imgAmt;
         }
 
         public Texture2D getFrame()
@@ -45,15 +57,31 @@ namespace Paper_Down_Under
         public void next()
         {
             ticks++;
-            if (ticks >= imgTicks[index])
+            if (imgTicks != null)
             {
-                ticks = 0;
-                index++;
-                if (index >= imgTicks.Length)
+                if (ticks >= imgTicks[index])
                 {
-                    index = 0;
+                    ticks = 0;
+                    index++;
+                    if (index >= imgTicks.Length)
+                    {
+                        index = 0;
+                    }
+                    partOfSpritesheet = new Rectangle(partOfSpritesheet.Width * index, partOfSpritesheet.Y, partOfSpritesheet.Width, partOfSpritesheet.Height);
                 }
-                partOfSpritesheet = new Rectangle(partOfSpritesheet.Width * index, partOfSpritesheet.Y, partOfSpritesheet.Width, partOfSpritesheet.Height);
+            }
+            else
+            {
+                if (ticks >= imgTick)
+                {
+                    ticks = 0;
+                    index++;
+                    if (index >= imgAmt)
+                    {
+                        index = 0;
+                    }
+                    partOfSpritesheet = new Rectangle(partOfSpritesheet.Width * index, partOfSpritesheet.Y, partOfSpritesheet.Width, partOfSpritesheet.Height);
+                }
             }
         }
     }
